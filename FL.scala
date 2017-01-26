@@ -14,28 +14,52 @@ import spire.syntax.literals._
 
 
 
-//------------------------ item frequency -------------------------//
+
 
 
 /**
-	* (polymorphic) frequency of each unique item
-  * a container
-	* folds over a Seq, creating a key in a Map
-	* for each unique value found in Seq passed in
-	* for items for which there is already a key,
-	* just increments the key by +1
-	*
-	*	@param q Seq of items
-	*	@tparam A
-	* @return a Map whose keys are unique items in q, values are counts
-
-	*
-  */
+ * --------item frequency ---------
+ * (polymorphic) frequency of each unique item
+ * a container
+ * folds over a Seq, creating a key in a Map
+ * for each unique value found in Seq passed in
+ * for items for which there is already a key,
+ * just increments the key by +1
+ *
+ * @param     q     Seq of items
+ * @tparam    A
+ * @return    Map whose keys are unique items in q,
+ *            values are counts
+ *
+ */
 def f[A](q:Seq[A]):Map[A,Int] = {
   q.foldLeft(Map[A,Int]()) {
     case (u,v) => u.updated(v, u.getOrElse(v, 0) + 1)
   }
 }
+
+
+
+/**
+ *----------------- membership ----------------
+ * for instance, given a list of tags a user follows (q)
+ * scan a given message (s), and for each word that is in the
+ * user's tag list, push that message to user's feed
+ *
+ * @param   q
+ *              a sequence of Strings,
+ * @param   s   a single string, eg, a message comprised
+ *              of words
+ * @return      Boolean, ie, is any word from the message s
+ *              in the word list, q?
+ *
+ */
+def isMember(q:Seq[String], s:String):Boolean = {
+  q.foldLeft(false)( (u, v) => {
+    u || s.contains(v)
+  })
+}
+
 
 
 
@@ -78,9 +102,9 @@ def f[Int](q:Seq[Int]=(1 to 100)):Seq[String] = {
 //------------- longest increasing subsequence -------------//
 
 /**
-	*	finds longest increasing subsequence
-	*	w/in a Seq of Ints
-	*/
+ *	finds longest increasing subsequence
+ *	w/in a Seq of Ints
+ */
 def longIncrSubseq(q:Seq[Int]):Seq[Int] = {
 	q.foldLeft(Seq[Int]()) {
 		(u,v) => if (v > u.headOption.getOrElse(0)) v +: u else 0 +: u
@@ -97,14 +121,14 @@ def longIncrSubseq(q:Seq[Int]):Seq[Int] = {
 }
 
 /**
-*	supports longIncrSubseq
-*	method injected in Scala's String class
-*	only purpose is to allow String replacement
-*	via the chained call syntax in LongIncrSubseq
-*	using the newly injected method 'doubleToInt'
-*	import Numeric.Implicits._
-*
-*/
+ *	supports longIncrSubseq
+ *	method injected in Scala's String class
+ *	only purpose is to allow String replacement
+ *	via the chained call syntax in LongIncrSubseq
+ * 	using the newly injected method 'doubleToInt'
+ *	import Numeric.Implicits._
+ *
+ */
 import Numeric.Implicits._
 
 implicit class StringEnhancement(s:String) {
