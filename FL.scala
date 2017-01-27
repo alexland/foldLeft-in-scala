@@ -12,13 +12,8 @@ import spire.algebra._
 import spire.syntax.literals._
 
 
-
-
-
-
-
 /**
- * --------item frequency ---------
+ * -----------------item frequency ------------------
  * (polymorphic) frequency of each unique item
  * a container
  * folds over a Seq, creating a key in a Map
@@ -61,9 +56,35 @@ def isMember(q:Seq[String], s:String):Boolean = {
 }
 
 
+/**
+ * selects one value per offset from among
+ * three (right, left, or middle) streams
+ * ie, three items in a tuple
+ * @param     t     sequence of Ints
+ * @param     u     sequence of Ints
+ * @param     v     sequence of Ints
+ *
+ * @returns   list of values--at each offset,
+ *            one value selected from one of
+ *            of three sequences at the given offset
+ *
+ *
+ */
+def select(t:Seq[Int], u:Seq[Int], v:Seq[Int]):List[Int] = {
+  def f[T, U, V](t:((T, U), V)) = {
+    (t._1._1, t._1._2, t._2)
+  }
+  val q = t.view.zip(u).zip(v).map(f)
+  q.foldLeft(List[Int]()) { (u,v) =>
+    v match {
+      case v1 if ((v._1 > v._2) && (v._1 > v._3)) => u :+ v._1
+      case v2 if ((v._2 > v._1) && (v._2 > v._3)) => u :+ v._2
+      case _ => u :+ v._3
+    }
+  }
+}
 
 
-//-------------------------- more -------------------- //
 
 /**
 *	a list of tuples, (qty, price_paid) is folded
