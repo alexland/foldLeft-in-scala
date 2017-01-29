@@ -13,7 +13,8 @@ import spire.syntax.literals._
 
 
 /**
- * -----------------item frequency ------------------
+ * -------------per-item frequency ----------
+ *
  * (polymorphic) frequency of each unique item
  * a container
  * folds over a Seq, creating a key in a Map
@@ -34,9 +35,9 @@ def f[A](q:Seq[A]):Map[A,Int] = {
 }
 
 
-
 /**
- *----------------- membership ----------------
+ * ----------------- membership ----------------
+ *
  * for instance, given a list of tags a user follows (q)
  * scan a given message (s), and for each word that is in the
  * user's tag list, push that message to user's feed
@@ -57,6 +58,7 @@ def isMember(q:Seq[String], s:String):Boolean = {
 
 
 /**
+ *
  * selects one value per offset from among
  * three (right, left, or middle) streams
  * ie, three items in a tuple
@@ -64,9 +66,10 @@ def isMember(q:Seq[String], s:String):Boolean = {
  * @param     u     sequence of Ints
  * @param     v     sequence of Ints
  *
- * @returns   list of values--at each offset,
- *            one value selected from one of
- *            of three sequences at the given offset
+ * @returns         list of values--at each
+ *                  offset, one value selected
+ *                  from one of of three candidate
+ *                  sequences at the given offset
  *
  *
  */
@@ -85,12 +88,11 @@ def select(t:Seq[Int], u:Seq[Int], v:Seq[Int]):List[Int] = {
 }
 
 
-
 /**
-*	a list of tuples, (qty, price_paid) is folded
-*	over to calculate profit
-*
-*/
+  *	a list of tuples, (qty, price_paid) is folded
+  *	over to calculate profit
+  *
+  */
 def f(q:List[(Int,Double)], vf:Double):Double = {
 	q.foldLeft(0.0) {
 		case (acc, (u, v)) => acc + (vf - v) * u
@@ -98,15 +100,10 @@ def f(q:List[(Int,Double)], vf:Double):Double = {
 }
 
 
-//-------------------- cumulative sum -------------------- //
-
-
-
-
-
-//------------------------- fizzbuzz ---------------------------//
-
-
+/**
+ * ---------------- fizzbuzz ---------------------
+ *
+ */
 def f[Int](q:Seq[Int]=(1 to 100)):Seq[String] = {
   q.foldLeft(Seq[String]())( (u, v) =>
     v match {
@@ -119,12 +116,32 @@ def f[Int](q:Seq[Int]=(1 to 100)):Seq[String] = {
 }
 
 
+/**
+ * ---------- sliding-window calculation ------------
+ *
+ * @param     q           sequence of Ints
+ * @param     winSize     window size, ie,
+ *                        number of values gathered for each
+ *                        window calculation
+ * @param     incr        number of offsets that the window
+ *                        is advanced for each new window
+ *                        calculation
+ *
+ * @returns         list of values--one for each window
+ *
+ *
+ */
+def f(q:Seq[Int], winSize:Int, incr:Int):List[Int] = {
+  q.sliding(winSize, incr).foldLeft(List[Int]()) { (u, v) =>
+    u :+ v.sum
+  }
+}
 
-//------------- longest increasing subsequence -------------//
 
 /**
- *	finds longest increasing subsequence
- *	w/in a Seq of Ints
+ * ---------- longest-increasing subsequence ------------
+ *
+ *	finds longest incr subseq w/in a Seq of Ints
  */
 def longIncrSubseq(q:Seq[Int]):Seq[Int] = {
 	q.foldLeft(Seq[Int]()) {
@@ -140,6 +157,7 @@ def longIncrSubseq(q:Seq[Int]):Seq[Int] = {
 	.map(_.toInt)
 	.toSeq
 }
+
 
 /**
  *	supports longIncrSubseq
