@@ -1,10 +1,10 @@
 
 
-#### fold _versus_ reduce _versus_ scan
+### fold _versus_ reduce _versus_ scan _versus_ aggregate
 
 in ascending order of generality:
 
-reduce -> scan -> fold
+reduce -> scan -> fold -> aggregate
 
 
 to _reduce_, you pass in
@@ -21,7 +21,7 @@ conceptually, each of these three methods requires _three_ objects to generate a
 
 among reduce, scan, and fold, there is no distinction with respect to the operator, the differences reside in the accumulator and the initiator
 
-consider first _reduce_; neither its accumulator or initiator are in the method's parameter list; instead both are hard-coded into the method.
+first _reduce_: neither its accumulator or initiator are in the method's parameter list; instead both are hard-coded into the method.
 
 the _type_ of accumulator (in _reduce_) is a member of some Scala Value class (ie, not a Reference class) and that class is determined by the common type of the elements comprising the sequence to be reduced.
 
@@ -121,9 +121,21 @@ _fold_
     - type: Value class, specified when parameterized accumulator is passed in
 
 
+### more generality still via _accumulate_
 
-#### fold _versus_ foldLeft _versus_ foldRight
+
+
+
+
+
+### fold _versus_ foldLeft _versus_ foldRight
 
 fold: order of operations is unspecified and "may be nondeterministic" according to the Scaladoc
 
-whether any of the three will give a result that differ from the other depends on the operator passed in--ie, is it _commutative_
+whether any of the three will give a result that differ from the other depends on the operator passed in--ie, is it _commutative_ and is it _associative_
+
+  - if _op_ is both _commutative_ and _associative_, three results are same
+
+  - if _op_ is
+
+  - if _op_
